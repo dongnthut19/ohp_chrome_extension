@@ -1,0 +1,28 @@
+.background-mask {
+    display: block;
+    position: fixed;
+    z-index: 10001;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('chrome-extension://aakofcmcpllpecfgmfmfcbaelonjjjcj/app/assets/images/bgblur.png');
+    background-repeat: repeat;
+}
+#loading-bar-spinner {
+  display: block;
+  position: fixed;
+  z-index: 10002;
+  top: 50%;
+  left: 50%;
+}
+
+    #loading-bar-spinner .spinner-icon {
+        width: 62px;
+        height: 62px;
+        transform: translate(-50%, -50%);
+        background-image: url('chrome-extension://aakofcmcpllpecfgmfmfcbaelonjjjcj/app/assets/images/ring-alt.gif');
+        background-size: cover;
+        background-repeat: no-repeat;
+        display: block
+    }

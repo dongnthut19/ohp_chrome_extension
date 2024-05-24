@@ -1,0 +1,164 @@
+#tbe-menubar {
+    background-color: blue;   
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 999999998;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    padding: 20px 15px;
+}
+#btn-arrow {
+    position: fixed;
+    right: 8px;
+    bottom: 31px;
+    width: 20px;
+    height: 20px;
+    z-index: 999999999;
+    background-size: 20px;
+    cursor: pointer;
+}
+.arrow-show {
+    background-color: rgba(0, 0, 0, 0.180392);
+    transform: rotate(180deg);
+}
+.arrow-hide, .arrow-show {
+    background: url('chrome-extension://fddpajdjehdahlpcjjdehmlfhpbkdgao/app/assets/images/arrow-icon.png') 0% 0% no-repeat;
+}
+#tbe-menubar > span {
+    font-size: 14px;
+}
+#btn-warning-1 a, #tbe-logo, #tbe-menubar > span {
+    margin-right: 15px;
+}
+.text-white {
+    color: #fff
+}
+
+#tbe-btn-submit {
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 8px 15px;
+}
+.bg-ed2328 {
+    background-color: rgb(237, 35, 40);
+}
+.btn {
+    margin: 0px 5px;
+}
+.btn-group-sm > .btn, .btn-sm {
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 5px 10px;
+}
+.btn-danger {
+    color: rgb(255, 255, 255);
+    background-color: rgb(217, 83, 79);
+    border-color: rgb(212, 63, 58);
+}
+.btn {
+    display: inline-block;
+    margin-bottom: 0px;
+    font-size: 14px;
+    line-height: 1.42857;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    padding: 6px 12px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+}
+#tbe-guide-box h4, #tbe-menubar, .btn, .tbe-info-warning, h1 {
+    text-align: center;
+}
+.btn, .btn-link {
+    font-weight: 400;
+}
+.btn, .btn-danger.active, .btn-danger:active, .btn-default.active, .btn-default:active, .btn-info.active, .btn-info:active, .btn-primary.active, .btn-primary:active, .btn-success.active, .btn-success:active, .btn-warning.active, .btn-warning:active, .open > .dropdown-toggle.btn-danger, .open > .dropdown-toggle.btn-default, .open > .dropdown-toggle.btn-info, .open > .dropdown-toggle.btn-primary, .open > .dropdown-toggle.btn-success, .open > .dropdown-toggle.btn-warning {
+    background-image: none;
+}
+.btn-danger.active, .btn-danger:active, .btn-danger:hover, .open > .dropdown-toggle.btn-danger {
+    color: rgb(255, 255, 255);
+    background-color: rgb(201, 48, 44);
+    border-color: rgb(172, 41, 37);
+}
+.bg-img-add {
+    padding-left: 30px;
+    background: url("chrome-extension://aakofcmcpllpecfgmfmfcbaelonjjjcj/app/assets/images/extention_icon.png") 0% 0% no-repeat;
+}
+.bg-img-cart {
+    padding-left: 30px;
+    background: url("chrome-extension://aakofcmcpllpecfgmfmfcbaelonjjjcj/app/assets/images/extention_icon.png") -35px 0px no-repeat;
+}
+#tbe-btn-show-cart {
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    position: relative;
+}
+.number-product
+{
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    border-radius: 50% 50%;
+    padding: 3px;
+    color: #fff;
+    background: red;
+    font-size: 11px;
+    width: 18px;
+    height: 18px;
+}
+.bg-transparent, .bg-transparent:active, .bg-transparent:focus, .bg-transparent:hover, .bg-transparent:visited {
+    background-color: transparent;
+}
+.invalid-prop {border: 1px solid red !important}
+#tbe-warning-bar {
+    position: fixed;
+    bottom: 80px;
+    line-height: 30px;
+    background-color: red;
+    z-index: 2147483647;
+    padding: 5px 30px;
+    margin: 0px 0px 0px 15px;
+    color: #fff
+}
+#tbe-warning-bar {
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+}
+@media (min-width: 768px)
+{
+    #tbe-warning-bar {
+        left: 20%;
+    }
+}
+@media (min-width: 992px)
+{
+    #tbe-warning-bar {
+        left: 25%;
+    }
+}
+@media (min-width: 1200px)
+{
+    #tbe-warning-bar {
+    left: 35%;
+    }  
+}
+
+
