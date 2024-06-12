@@ -96,7 +96,13 @@ function taobaoWorker() {
                     }
                     else {
                         shopName = document.querySelectorAll('[class*="ShopHeaderNew--shopName"]');
-                        objProduct.shopName = shopName[0]?.innerText || "";
+                        if (shopName.length > 0) {
+                            objProduct.shopName = shopName[0]?.innerText || "";
+                        }
+                        else {
+                            shopName = document.querySelectorAll('[class*="ShopHeader--shopName"]');
+                            objProduct.shopName = shopName[0]?.innerText || "";
+                        }
                     }
 
                     if (shopLink.length > 0) {
@@ -104,7 +110,13 @@ function taobaoWorker() {
                     }
                     else {
                         shopLink = document.querySelectorAll('[class*="ShopHeaderNew--detailWrap"]');
-                        objProduct.shopLink = shopLink[0]?.href || "";
+                        if (shopLink.length > 0) {
+                            objProduct.shopLink = shopLink[0]?.href || "";
+                        }
+                        else {
+                            shopLink = document.querySelectorAll('[class*="ShopHeader--detailWrap"]');
+                            objProduct.shopLink = shopLink[0]?.href || "";
+                        }
                     }
 
                     cartHelp.flyingCart(`.${productImageWrappClass}`);

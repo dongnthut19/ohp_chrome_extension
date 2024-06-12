@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Ohp.com.vn Order Tool",
   "short_name": "Ohp.com.vn Order Tool",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Ohp.com.vn - Order Tool",
   "icons": {
     "16": "app/assets/icons/icon_16_active.png",
