@@ -7,22 +7,21 @@ function taobaoWorker() {
     
     function checkSelectedProp(alertArea) {  
         listPropSelected = [];      
-        var areaProductProp = $("#J_isku");
-        var listProp = $("#J_isku").find("dl.J_Prop");
+        const listProp = document.querySelectorAll('[class*="SkuContent--skuItem"]');
         var isSelectEnoughProp = false;
         if (listProp.length > 0) {
             var countCheck = 0;
-            listProp.each(function () {
+            listProp.forEach(function (element) {
                 var itemProp = {};
-                var listSubProp = $(this).find("li");
-                var propTitle = $(this).find("dt");
-                itemProp.propTitle = propTitle["0"].innerText;
+                var listSubProp = element.querySelectorAll('[class*="SkuContent--valueItem"]');
+                var propTitle = element.querySelectorAll('[class*="ItemLabel--labelText"]');
+                itemProp.propTitle = propTitle[0]?.innerText || '';
                 for (var i = 0; i < listSubProp.length; i++) {
                     var owner = listSubProp[i];
-                    if (owner.className.indexOf("tb-selected") > -1) {
+                    if (owner.className.indexOf("SkuContent--isSelected") > -1) {
                         countCheck ++;
-                        var propValue = owner.children[0].children[0].innerText;
-                        itemProp.propValue = propValue;
+                        var skuValueName = owner.querySelectorAll('[class*="SkuContent--valueItemText"]');
+                        itemProp.propValue = skuValueName[0]?.innerText || '';
                         break;
                     }
                 }
