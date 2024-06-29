@@ -62,7 +62,7 @@ function chivicanWorker() {
                         console.log('xhr = ', xhr);
                         removeLoading();
                         window.chrome.storage.local.set({ 'cvc-cart-storage': null });
-                        window.location.reload();
+                        // window.location.reload();
                     }
                 });
             }

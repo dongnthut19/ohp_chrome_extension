@@ -169,7 +169,7 @@ function cartHelper() {
         CartShopId: 0,
         ProductName: "",
         ProductImage: "",
-        ProductLink: 0,
+        ProductLink: "",
         ProductNote: "",
         NoteForMySelf: "",
         Quantity: 0,
@@ -189,7 +189,7 @@ function cartHelper() {
       }
 
       productCurrent.ProductName = productInfo.productTitle;
-      productCurrent.productLink = productInfo.productLink;
+      productCurrent.ProductLink = productInfo.productLink;
       productCurrent.ProductImage = productInfo.productImg;
       productCurrent.Quantity = productInfo.quantity;
       productCurrent.PriceWeb = parseFloat(productInfo.productPricePro);

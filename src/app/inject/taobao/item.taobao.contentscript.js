@@ -64,7 +64,7 @@ function taobaoWorker() {
                     var productTitle = document.querySelectorAll('[class*="ItemHeader--mainTitle"]');
                     var promotionPro = $("#J_PromoPriceNum");
                     var productPricePro = document.querySelectorAll('[class*="Price--priceText"]');
-                    var quantity = document.querySelector('.countValueForPC');
+                    var quantity = document.querySelectorAll('[class*="Operation--countValue"]');
                     var productImg = document.querySelectorAll('[class*="PicGallery--mainPic"]');
                     var productImageWrappClass = '';
                     var shopName = document.querySelectorAll('[class*="ShopHeader--title"]');
@@ -82,7 +82,12 @@ function taobaoWorker() {
                     if (productTitle.length > 0) {
                         objProduct.productTitle = productTitle[0]?.innerText || "";
                     }
-                    objProduct.quantity = quantity?.value || 1;
+                    // objProduct.quantity = quantity?.value || 1;
+                    if(quantity.length > 1)
+                    {
+                        objProduct.quantity = quantity[1]?.value || 1;
+                    }
+
                     if (productImg.length > 1) {
                         productImageWrappClass = productImg[0]?.className;
                         objProduct.productImg = productImg[1]?.src || "";
