@@ -61,7 +61,7 @@ function taobaoWorker() {
                 if(isValidate)
                 {
                     var objProduct = {};
-                    var productTitle = document.querySelectorAll('[class*="ItemHeader--mainTitle"]');
+                    var productTitle = document.querySelectorAll('[class*="ItemTitle--mainTitle"]');
                     var promotionPro = $("#J_PromoPriceNum");
                     var productPricePro = document.querySelectorAll('[class*="Price--priceText"]');
                     var quantity = document.querySelectorAll('[class*="Operation--countValue"]');
