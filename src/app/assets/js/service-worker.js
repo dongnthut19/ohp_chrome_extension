@@ -1,0 +1,1 @@
+importScripts('./const.js', './jquery/jquery.min.js', './utils.js', './background.js', './contentScriptHelper.js', './accounting.min.js');

@@ -49,7 +49,7 @@ function taobaoWorker() {
     
     /* ------------ Cached DOM ------------ */
     function loadToolbar() {
-        $.get(chrome.extension.getURL('app/assets/template/toolbar-taobao.html'), function (toolbarHtml) {
+        $.get(chrome.runtime.getURL('app/assets/template/toolbar-taobao.html'), function (toolbarHtml) {
             /* set cached global dom */
             $taobaoToolbar = $(toolbarHtml);
             $("body").append($taobaoToolbar);
@@ -81,6 +81,12 @@ function taobaoWorker() {
                     }
                     if (productTitle.length > 0) {
                         objProduct.productTitle = productTitle[0]?.innerText || "";
+                    }
+                    else {
+                        productTitle = document.querySelectorAll('[class*="ItemTitle--mainTitle"]');
+                        if (productTitle.length > 0) {
+                            objProduct.productTitle = productTitle[0]?.innerText || "";
+                        }
                     }
                     // objProduct.quantity = quantity?.value || 1;
                     if(quantity.length > 1)
@@ -145,7 +151,7 @@ function taobaoWorker() {
     }
 
     function loadContainerPrice() {
-        $.get(chrome.extension.getURL('app/assets/template/container-price.html'), function (containerPriceHtml) {
+        $.get(chrome.runtime.getURL('app/assets/template/container-price.html'), function (containerPriceHtml) {
             /* set cached global dom */
             $taobaoContainerPrice = $(containerPriceHtml);
             $("#J_Title").append($taobaoContainerPrice);

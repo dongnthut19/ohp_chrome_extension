@@ -22,14 +22,14 @@ function ContentScriptHelper() {
     self.initScript = function(src) {
 
         var scriptObj = document.createElement('script');
-        scriptObj.src = chrome.extension.getURL(src);
+        scriptObj.src = chrome.runtime.getURL(src);
         document.getElementsByTagName('body')[0].appendChild(scriptObj);
     };
 
     self.initCss = function (src) {
 
         var scriptObj = document.createElement('link');
-        scriptObj.href = chrome.extension.getURL(src);
+        scriptObj.href = chrome.runtime.getURL(src);
         scriptObj.rel = "stylesheet";
         document.getElementsByTagName('body')[0].appendChild(scriptObj);
     };
@@ -67,7 +67,7 @@ function ContentScriptHelper() {
     self.loadToolbarExtension = function(url, callbackFunction) {
 
         $.get(
-            chrome.extension.getURL(url), function (htmlContent) {
+            chrome.runtime.getURL(url), function (htmlContent) {
                 toolbarStringResult = htmlContent;
                 callbackFunction(toolbarStringResult);
             });

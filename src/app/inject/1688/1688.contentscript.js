@@ -335,7 +335,7 @@ function Worker1688() {
   
     function loadToolbar() {
       $.get(
-        chrome.extension.getURL("app/assets/template/toolbar-taobao.html"),
+        chrome.runtime.getURL("app/assets/template/toolbar-taobao.html"),
         function (toolbarHtml) {
           /* set cached global dom */
           $Toolbar1688 = $(toolbarHtml);
@@ -589,7 +589,7 @@ function Worker1688() {
   
     function loadContainerPrice() {
       $.get(
-        chrome.extension.getURL("app/assets/template/container-price-1688.html"),
+        chrome.runtime.getURL("app/assets/template/container-price-1688.html"),
         function (containerPriceHtml) {
           /* set cached global dom */
           $ContainerPrice1688 = $(containerPriceHtml);
