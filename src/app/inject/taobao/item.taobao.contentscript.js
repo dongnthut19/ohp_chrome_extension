@@ -7,20 +7,20 @@ function taobaoWorker() {
     
     function checkSelectedProp(alertArea) {  
         listPropSelected = [];      
-        const listProp = document.querySelectorAll('[class*="SkuContent--skuItem"]');
+        const listProp = document.querySelectorAll('[class*="skuItem"]');
         var isSelectEnoughProp = false;
         if (listProp.length > 0) {
             var countCheck = 0;
             listProp.forEach(function (element) {
                 var itemProp = {};
-                var listSubProp = element.querySelectorAll('[class*="SkuContent--valueItem"]');
-                var propTitle = element.querySelectorAll('[class*="ItemLabel--labelText"]');
+                var listSubProp = element.querySelectorAll('[class*="valueItem"]');
+                var propTitle = element.querySelectorAll('[class*="labelText"]');
                 itemProp.propTitle = propTitle[0]?.innerText || '';
                 for (var i = 0; i < listSubProp.length; i++) {
                     var owner = listSubProp[i];
-                    if (owner.className.indexOf("SkuContent--isSelected") > -1) {
+                    if (owner.className.indexOf("isSelected") > -1) {
                         countCheck ++;
-                        var skuValueName = owner.querySelectorAll('[class*="SkuContent--valueItemText"]');
+                        var skuValueName = owner.querySelectorAll('[class*="valueItemText"]');
                         itemProp.propValue = skuValueName[0]?.innerText || '';
                         break;
                     }
@@ -60,23 +60,25 @@ function taobaoWorker() {
                 var isValidate = checkSelectedProp(alertArea);
                 if(isValidate)
                 {
-                    var objProduct = {};
-                    var productTitle = document.querySelectorAll('[class*="ItemTitle--mainTitle"]');
+                    var objProduct = {
+                        productPricePro: 1,
+                    };
+                    var productTitle = document.querySelectorAll('[class*="mainTitle"]');
                     var promotionPro = $("#J_PromoPriceNum");
-                    var productPricePro = document.querySelectorAll('[class*="Price--priceText"]');
-                    var quantity = document.querySelectorAll('[class*="Operation--countValue"]');
-                    var productImg = document.querySelectorAll('[class*="PicGallery--mainPic"]');
+                    var productPricePro = document.querySelectorAll('[class*="priceText"]');
+                    var quantity = document.querySelectorAll('[class*="countValue"]');
+                    var productImg = document.querySelectorAll('[class*="mainPic"]');
                     var productImageWrappClass = '';
-                    var shopName = document.querySelectorAll('[class*="ShopHeader--title"]');
-                    var shopLink = document.querySelectorAll('[class*="ShopHeader--board"]');
+                    var shopName = document.querySelectorAll('[class*="shopName"]');
+                    var shopLink = document.querySelectorAll('[class*="detailWrap"]');
                     if(promotionPro.length > 0)
                     {
                         objProduct.productPricePro = promotionPro["0"]?.innerText || 0;
                     }
                     else
                     {
-                        if (productPricePro.length > 0) {
-                            objProduct.productPricePro = productPricePro[0]?.innerText || 0;
+                        if (productPricePro.length > 1) {
+                            objProduct.productPricePro = productPricePro[1]?.innerText || 0;
                         }
                     }
                     if (productTitle.length > 0) {
@@ -88,12 +90,10 @@ function taobaoWorker() {
                             objProduct.productTitle = productTitle[0]?.innerText || "";
                         }
                     }
-                    // objProduct.quantity = quantity?.value || 1;
-                    if(quantity.length > 1)
-                    {
-                        objProduct.quantity = quantity[1]?.value || 1;
+                    
+                    if (quantity.length > 1) {
+                        objProduct.quantity = quantity[1].value || 1;
                     }
-
                     if (productImg.length > 1) {
                         productImageWrappClass = productImg[0]?.className;
                         objProduct.productImg = productImg[1]?.src || "";
@@ -146,7 +146,7 @@ function taobaoWorker() {
             });
 
             contentScriptHelper.loadClickRedirectToCvc();
-            contentScriptHelper.loadTotalCart1688();
+            contentScriptHelper.loadTotalCart();
         });
     }
 
