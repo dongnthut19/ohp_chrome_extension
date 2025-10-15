@@ -7,34 +7,22 @@ function tmallWorker() {
 
   function checkSelectedProp(alertArea) {
     listPropSelected = [];
-    var areaProductProp = $(".skuWrapper");
-    var listProp = areaProductProp ? areaProductProp.find("div.skuCate") : null;
+    var areaProductProp = $("#tbpcDetail_SkuPanelBody");
+    const listProp = document.querySelectorAll('[class*="skuItem"]');
     var isSelectEnoughProp = false;
     if (listProp && listProp.length > 0) {
       var countCheck = 0;
-      listPropSelected = [];
-      listProp.each(function () {
+      listProp.forEach(function (element) {
         var itemProp = {};
-        var listSubProp = $(this).find("div.skuItem");
-        var propTitle = $(this).find(".skuCateText");
-        itemProp.propTitle = propTitle["0"].innerText;
+        var listSubProp = element.querySelectorAll('[class*="valueItem"]');
+        var propTitle = element.querySelectorAll('[class*="ItemLabel"]');
+        itemProp.propTitle = propTitle[0]?.innerText || "";
         for (var i = 0; i < listSubProp.length; i++) {
           var owner = listSubProp[i];
-          if (owner.className.indexOf("current") > -1) {
+          if (owner.className.indexOf("isSelected") > -1) {
             countCheck++;
-
-            // find property value
-            const spanInDivInRoots = $(owner).find("span");
-            for (var j = 0; j < spanInDivInRoots.length; j++) {
-              const spanInDivInRoot = spanInDivInRoots[j];
-              const className = spanInDivInRoot.className;
-
-              if (className.indexOf("selectSkuText") > -1) {
-                itemProp.propValue = spanInDivInRoot.innerText;
-                break;
-              }
-            }
-
+            var skuValueName = owner.querySelectorAll('[class*="f-els-1"]');
+            itemProp.propValue = skuValueName[0]?.innerText || "";
             break;
           }
         }
@@ -61,15 +49,15 @@ function tmallWorker() {
     const proProperties = {};
 
     // product title
-    const lstProductTitle = $("#root h1");
+    const lstProductTitle = document.querySelectorAll('[class*="mainTitle"]');
     proProperties.productTitle =
       lstProductTitle.length > 0 ? lstProductTitle["0"].innerText : "";
 
     // product quantity element
-    const proQuantity = $("#root input.countValueForPC");
-    proProperties.quantity =
-      proQuantity.length > 0 ? proQuantity["0"].value : 0;
-
+    const proQuantity = document.querySelectorAll('[class*="countValue"]');
+    if (proQuantity.length > 1) {
+      proProperties.quantity = proQuantity[1]?.value || 1;
+    }
     // product link element
     proProperties.productLink = window.location.href;
 
@@ -79,46 +67,21 @@ function tmallWorker() {
     const rootElement = $("#root");
     const divInRoots = rootElement.find("div");
 
-    let originalPrice = 0;
-    let promotionPrice = 0;
-    for (let i = 0; i < divInRoots.length; i++) {
-      const divInRoot = divInRoots[i];
-      const className = divInRoot.className;
-      // find promotion price element
-      if (className.indexOf("Price--extraPrice") > -1) {
-        promotionPrice =
-          divInRoot.children.length === 3 ? divInRoot.children[2].innerText : 0;
-      }
-
-      // find original price element
-      if (className.indexOf("Price--originPrice") > -1) {
-        originalPrice =
-          divInRoot.children.length === 3 ? divInRoot.children[2].innerText : 0;
-      }
-
-      proProperties.productPricePro =
-        promotionPrice > 0 ? promotionPrice : originalPrice;
-      if (promotionPrice > 0) break;
+    var productPricePro = document.querySelectorAll('[class*="priceWrap"]');
+    if (productPricePro.length > 1) {
+      const price = productPricePro[0].querySelectorAll('[class*="text"]');
+      proProperties.productPricePro = price[0]?.innerText || 0;
     }
 
     // product image
-    // proProperties.productImg = productImg["0"].src;
-    const imageInRoots = rootElement.find("img");
-
-    for (let i = 0; i < imageInRoots.length; i++) {
-      const imageInRoot = imageInRoots[i];
-      const className = imageInRoot.className;
-
-      if (className.indexOf("PicGallery--mainPic") > -1) {
-        proProperties.productImg = imageInRoot.src;
-        proProperties.imgClassName = className;
-        break;
-      }
+    const productImg = document.querySelectorAll('img[class*="mainPic"]');
+    if (productImg.length > 0) {
+      proProperties.productImg = productImg[0]?.src || "";
     }
 
-    // shop name and link
-    let shopName = document.querySelectorAll('[class*="ShopHeader--title"]');
-    let shopLink = document.querySelectorAll('[class*="ShopHeader--board"]');
+    // shop name and links
+    let shopName = document.querySelectorAll('[class*="shopName"]');
+    let shopLink = document.querySelectorAll('[class*="detailWrap"]');
     if (shopName.length > 0) {
       proProperties.shopName = shopName[0]?.innerText || "";
     } else {
