@@ -58,3 +58,77 @@ li {
 #tbe-guide-box h4, #tbe-menubar, .btn, .tbe-info-warning, h1 {
     text-align: center;
 }
+
+/* Style cho promotionBanner */
+#promotionBanner {
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+#promotionBanner dl {
+    margin: 8px 0;
+    padding: 10px 12px;
+    background-color: #ffffff;
+    border-left: 3px solid #007bff;
+    border-radius: 3px;
+}
+
+#promotionBanner dl:last-child {
+    background-color: #fff3cd;
+    border-left-color: #ffc107;
+    margin-top: 12px;
+    padding: 0;
+}
+
+#promotionBanner dl:last-child dd {
+    padding: 0;
+}
+
+#promotionBanner dl:last-child dd::before {
+    content: none;
+}
+
+#promotionBanner dd {
+    margin: 4px 0;
+    padding: 4px 0;
+    display: block;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#promotionBanner dd:first-child {
+    color: #495057;
+    font-weight: 500;
+}
+
+#promotionBanner dd:first-child::before {
+    content: "📦 ";
+    margin-right: 4px;
+}
+
+#promotionBanner dd:nth-child(2) {
+    color: #212529;
+}
+
+#promotionBanner dd:nth-child(2)::before {
+    content: "💰 ";
+    margin-right: 4px;
+}
+
+#promotionBanner dd .tbe-color-price {
+    color: #d32a1a;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+#promotionBanner dd .text-danger {
+    color: #a94442;
+    font-weight: 600;
+    display: block;
+    padding: 8px;
+    background-color: #f8d7da;
+    border-radius: 3px;
+    text-align: center;
+}

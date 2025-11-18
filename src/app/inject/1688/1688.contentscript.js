@@ -10,12 +10,10 @@ function Worker1688() {
 
   function flyingCart() {
     var cart = $("#tbe-btn-show-cart");
-    var imgtodrag = $(".box-img img");
-    if (imgtodrag.length === 0) {
-      imgtodrag = $(
-        ".img-list-wrapper .detail-gallery-turn-wrapper img.detail-gallery-img"
-      );
-    }
+    const imgtodrag = $(
+      ".od-gallery-turn-item-wrapper.prepic-active .od-gallery-img"
+    );
+
     if (imgtodrag) {
       var imgclone = imgtodrag
         .clone()
@@ -55,239 +53,11 @@ function Worker1688() {
     }
   }
 
-  function addPropperty() {
-    var listProducts = [];
-    var areaProductProp = $(".mod-detail-purchasing .d-content");
-    var alertArea = $Toolbar1688.find("#tbe-warning-bar");
-    var leadingTitle = $(".d-content .obj-leading .obj-header .obj-title");
-    var skduTitle = $(".d-content .obj-sku .obj-header .obj-title");
-    var tableInfo = $(".obj-list .list-selected .list-info table.table-list");
-    if (
-      tableInfo.length > 0 &&
-      tableInfo[0].children.length === 0 &&
-      skduTitle.length > 0
-    ) {
-      //sản phẩm có thuộc tính nhưng chưa chọn thuộc tính sản phẩm
-      areaProductProp.addClass("invalid-prop");
-      alertArea.html("Bạn phải chọn đầy đủ thuộc tính cho sản phẩm.").show();
-      setTimeout(function () {
-        alertArea.hide();
-      }, 7000);
-      $("html,body").animate({ scrollTop: 500 }, 1000);
-      return false;
-    } else if (skduTitle.length === 0) {
-      // sản phẩm không có thuộc tính
-      var countProduct = 0;
-      var skuArea = $(".d-content .obj-sku .obj-content table.table-sku tr");
-      var objProduct = {};
-      var listPropSelected = [];
-      var productTitle = $("#mod-detail-title h1.d-title");
-      if (productTitle === undefined) {
-        productTitle = $(".title-first-column div.title-text");
-      }
-      var amount = $(
-        ".d-content .unit-detail-amount-control input.amount-input"
-      );
-      var productImg = $(".box-img img");
-      var shopName;
-      if ($(".supplierinfo-common .company-name a").length > 0) {
-        shopName = $(".supplierinfo-common .company-name a");
-      } else if (
-        $(".smt-info .content .abstract .nameArea a.name").length > 0
-      ) {
-        shopName = $(".smt-info .content .abstract .nameArea a.name");
-      } else if (
-        $(
-          ".app-import_supplierInfoSmall .info .content .abstract .company a.name"
-        ).length > 0
-      ) {
-        shopName = $(
-          ".app-import_supplierInfoSmall .info .content .abstract .company a.name"
-        );
-      } else if ($(".logoContainer .logoName a").length > 0) {
-        shopName = $(".logoContainer .logoName a");
-      } else if (
-        $("div#hd_0_container_0 div div div div div div div span").length > 0
-      ) {
-        shopName = $("div#hd_0_container_0 div div div div div div div span");
-      }
-      objProduct.ProductName = productTitle["0"].innerText;
-      objProduct.Quantity = amount[0].value;
-
-      objProduct.ToltalWeb = cartHelp.totalWeb(minPrice, amount[0].value);
-      objProduct.TotalVnd = cartHelp.totalVND(minPrice);
-      objProduct.ProductImage = productImg["0"].src;
-      objProduct.ProductLink = window.location.href;
-      objProduct.CartProductPropFor1688Dto = listPropSelected;
-
-      if (shopName) {
-        objProduct.ShopName = shopName["0"].innerText;
-        objProduct.ShopLink = siteLink;
-      } else {
-        objProduct.ShopName = siteName;
-        objProduct.ShopLink = siteLink;
-      }
-
-      objProduct.WebType = cartHelp.checkUrlWebType();
-
-      listProducts.push(objProduct);
-      countProduct += parseInt(objProduct.Quantity);
-      if (countProduct >= minProduct) {
-        alertArea.hide();
-        saveCart(listProducts);
-        flyingCart();
-      } else {
-        alertArea
-          .html("Bạn phải mua ít nhất " + minProduct + " sản phẩm.")
-          .show();
-        setTimeout(function () {
-          alertArea.hide();
-        }, 7000);
-        return false;
-      }
-    } else if (tableInfo.length > 0) {
-      //có thuộc tính và chọn đấy đủ
-      var countProduct = 0;
-
-      //new code: update 30/11/2016
-      var skuArea = $(".d-content .obj-sku .obj-content table.table-sku tr");
-
-      for (var i = 0; i < tableInfo[0].children[0].children.length; i++) {
-        var trCurrent = tableInfo[0].children[0].children[i];
-        var tdPropLeading = trCurrent.children[0];
-        var tdDesc;
-        if (leadingTitle.length === 0) {
-          tdDesc = trCurrent.children[1];
-        } else {
-          tdDesc = trCurrent.children[2];
-        }
-        var listLiProp = tdDesc.children[0].children;
-        if (listLiProp.length > 0) {
-          for (var j = 0; j < listLiProp.length; j++) {
-            var liCurrent = listLiProp[j];
-            var stringData;
-            var objData;
-
-            var objProduct = {};
-            var listPropSelected = [];
-            if (leadingTitle.length > 0) {
-              stringData = liCurrent.attributes[0].nodeValue;
-              objData = JSON.parse(stringData);
-              var objLeading = {
-                PropLabel: leadingTitle[0].innerText,
-                PropValue: tdPropLeading.innerText,
-              };
-              listPropSelected.push(objLeading);
-            } else {
-              stringData = liCurrent.attributes[1].nodeValue;
-              objData = JSON.parse(stringData);
-            }
-            var objSku = {
-              PropLabel: skduTitle[0].innerText,
-              PropValue: objData.skuName,
-            };
-            listPropSelected.push(objSku);
-
-            var productTitle = $("#mod-detail-title h1.d-title");
-            var productImg = $(".box-img img");
-            var shopName;
-            if ($(".supplierinfo-common .company-name a").length > 0) {
-              shopName = $(".supplierinfo-common .company-name a");
-            } else if (
-              $(".smt-info .content .abstract .nameArea a.name").length > 0
-            ) {
-              shopName = $(".smt-info .content .abstract .nameArea a.name");
-            } else if (
-              $(
-                ".app-import_supplierInfoSmall .info .content .abstract .company a.name"
-              ).length > 0
-            ) {
-              shopName = $(
-                ".app-import_supplierInfoSmall .info .content .abstract .company a.name"
-              );
-            } else if ($(".logoContainer .logoName a").length > 0) {
-              shopName = $(".logoContainer .logoName a");
-            } else if (
-              $("div#hd_0_container_0 div div div div div div div span")
-                .length > 0
-            ) {
-              shopName = $(
-                "div#hd_0_container_0 div div div div div div div span"
-              );
-            }
-
-            objProduct.ProductName = productTitle["0"].innerText;
-            objProduct.Quantity = objData.amount;
-
-            objProduct.ToltalWeb = cartHelp.totalWeb(minPrice, objData.amount);
-            objProduct.TotalVnd = cartHelp.totalVND(minPrice);
-            objProduct.ProductImage = productImg["0"].src;
-            objProduct.ProductLink = window.location.href;
-            objProduct.CartProductPropFor1688Dto = listPropSelected;
-
-            if (shopName) {
-              objProduct.ShopName = shopName["0"].innerText;
-              objProduct.ShopLink = siteLink;
-            } else {
-              objProduct.ShopName = siteName;
-              objProduct.ShopLink = siteLink;
-            }
-
-            objProduct.WebType = cartHelp.checkUrlWebType();
-            for (var a = 0; a < skuArea.length; a++) {
-              var skuAreaPropValue = skuArea[a].children[0].innerText;
-              var skuAreaPropHeader = $(".obj-sku .obj-header .obj-title");
-              var skuAreaPropPrice =
-                skuArea[a].children[1].children[0].children[0].innerText;
-              if (listPropSelected.length > 1) {
-                if (
-                  skuAreaPropHeader[0].innerText ===
-                    listPropSelected[1].PropLabel &&
-                  skuAreaPropValue === listPropSelected[1].PropValue
-                ) {
-                  objProduct.PriceWeb = skuAreaPropPrice;
-                }
-              } else {
-                if (
-                  skuAreaPropHeader[0].innerText ===
-                    listPropSelected[0].PropLabel &&
-                  skuAreaPropValue === listPropSelected[0].PropValue
-                ) {
-                  objProduct.PriceWeb = skuAreaPropPrice;
-                }
-              }
-            }
-            listProducts.push(objProduct);
-            countProduct += parseInt(objProduct.Quantity);
-          }
-        }
-      }
-      if (countProduct >= minProduct) {
-        alertArea.hide();
-        saveCart(listProducts);
-        flyingCart();
-      } else {
-        alertArea
-          .html("Bạn phải mua ít nhất " + minProduct + " sản phẩm.")
-          .show();
-        setTimeout(function () {
-          alertArea.hide();
-        }, 7000);
-        return false;
-      }
-    }
-  }
-
   function addPropertyForNewUI() {
-    const noAffixWrapper = $(".pc-sku-gyp-more-dimension-wrapper");
+    const noAffixWrapper = $("#skuSelection");
     var alertArea = $Toolbar1688.find("#tbe-warning-bar");
-    const skuWrapper = $(".gyp-sku-selector-wrap");
 
-    if (
-      skuWrapper.length > 0 &&
-      tempLstProduct.length === 0 &&
-      noAffixWrapper.length > 0
-    ) {
+    if (tempLstProduct.length === 0 && noAffixWrapper.length > 0) {
       //sản phẩm có thuộc tính nhưng chưa chọn thuộc tính sản phẩm
       noAffixWrapper.addClass("invalid-prop");
       alertArea.html("Bạn phải chọn đầy đủ thuộc tính cho sản phẩm.").show();
@@ -298,7 +68,7 @@ function Worker1688() {
       return false;
     }
 
-    if (skuWrapper.length > 0) {
+    if (tempLstProduct.length > 0) {
       // sản phẩm có thuộc tính
       alertArea.hide();
       console.log("tempLstProduct = ", tempLstProduct);
@@ -347,12 +117,7 @@ function Worker1688() {
           var buttonAddCart = $Toolbar1688.find("#tbe-btn-submit");
           /*event click of add cart button */
           buttonAddCart.click(function () {
-            var newUIVersion = $("#recyclerview");
-            if (newUIVersion.length > 0) {
-              addPropertyForNewUI();
-            } else {
-              addPropperty();
-            }
+            addPropertyForNewUI();
           });
 
           contentScriptHelper.loadClickRedirectToCvc();
@@ -365,12 +130,8 @@ function Worker1688() {
   function iconAddProductForNewUI($button) {
     setTimeout(() => {
       const listProp = [];
-      const titleElement = $(
-        ".od-pc-offer-title-contain .title-first-column .title-text"
-      );
-      let shopNameElement = $(
-        "div#hd_0_container_0 div div div div div div div span"
-      );
+      const titleElement = $("#productTitle h1");
+      let shopNameElement = $(".winport-title h1");
 
       // tìm cặp sku 1
       const sku1Element = $(
@@ -419,63 +180,55 @@ function Worker1688() {
           });
         }
       }
-      const quantityParentNode = $button.parentNode.parentNode.parentNode;
-      const quantityInput = quantityParentNode.children[1].children[0];
-      const quantity = quantityInput.value;
+      // Lấy quantity từ input có class ant-input-number-input
+      const quantityInput = $($button)
+        .closest(".ant-input-number-wrapper")
+        .find(".ant-input-number-input");
+      const quantity =
+        quantityInput.length > 0
+          ? quantityInput.val() || quantityInput[0].value
+          : "";
 
-      // ảnh
-      const newImageProp = $(
-        ".pc-sku-wrapper .prop-item-wrapper .prop-item .active .prop-img"
-      );
-      console.log(
-        "🚀 ~ file: 1688.contentscript.js ~ line 417 ~ setTimeout ~ newImagePro",
-        newImageProp
-      );
-
+      // ảnh - lấy ảnh đang được hiển thị (có class prepic-active)
       let productImage = "";
-      if (newImageProp.length > 0) {
-        const rawProductImage = newImageProp[0].attributes[1].value;
-        productImage = rawProductImage
-          .replace('background: url("', "")
-          .replace(
-            '") center center / contain no-repeat; width: 36px; height: 36px; margin-right: 2px;',
-            ""
-          );
-      } else if (parentNode.children.length === 3) {
-        // sku có ảnh
-        const rawProductImage = parentNode.children[0].attributes[1].nodeValue;
-        productImage = rawProductImage
-          .replace('background: url("', "")
-          .replace(
-            '") center center / contain no-repeat; width: 36px; height: 36px; margin-right: 10px;',
-            ""
-          );
-      } else {
-        const productImgs = $(
-          ".img-list-wrapper .detail-gallery-turn-wrapper img.detail-gallery-img"
-        );
-        if (productImgs.length > 0) {
-          productImage = productImgs[0].attributes[2].nodeValue;
-        }
+      const activeImage = $(
+        ".od-gallery-turn-item-wrapper.prepic-active .od-gallery-img"
+      );
+      if (activeImage.length > 0) {
+        productImage = activeImage.attr("src") || activeImage[0].src;
       }
 
       let shopName = "";
       let shopLink = "";
       if (shopNameElement.length > 0) {
         shopName = shopNameElement[0].innerText;
-        shopLink = siteLink;
+        // Lấy shop link từ thẻ a.shop-company-name
+        const shopLinkElement = $(".winport-title .shop-company-name");
+        if (shopLinkElement.length > 0) {
+          shopLink = shopLinkElement.attr("href") || siteLink;
+        } else {
+          shopLink = siteLink;
+        }
       } else {
         shopNameElement = $(
-          ".cjt-header-container .left-logo .logo-two .logo-name a"
+          "div#hd_0_container_0 div div div div div div div span"
         );
         if (shopNameElement.length > 0) {
           shopName = shopNameElement[0].innerText;
-          shopLink = shopNameElement[0].attributes
-            ? shopNameElement[0].attributes[0].nodeValue
-            : siteLink;
-        } else {
-          shopName = siteName;
           shopLink = siteLink;
+        } else {
+          shopNameElement = $(
+            ".cjt-header-container .left-logo .logo-two .logo-name a"
+          );
+          if (shopNameElement.length > 0) {
+            shopName = shopNameElement[0].innerText;
+            shopLink = shopNameElement[0].attributes
+              ? shopNameElement[0].attributes[0].nodeValue
+              : siteLink;
+          } else {
+            shopName = siteName;
+            shopLink = siteLink;
+          }
         }
       }
 
@@ -527,111 +280,84 @@ function Worker1688() {
   function btnAddProductForNewUI($button) {
     setTimeout(() => {
       const listProp = [];
-      const titleElement = $(
-        ".od-pc-offer-title-contain .title-first-column .title-text"
-      );
-      const shopNameElement = $(
-        "div#hd_0_container_0 div div div div div div div span"
-      );
+      const titleElement = $("#productTitle h1");
+      const shopNameElement = $(".winport-title h1");
 
-      // tìm cặp sku 1
-      const sku1Element = $(
-        ".gyp-sku-selector-wrap .sku-selector-flex-box .sku-selector-name"
-      );
-      if (sku1Element.length > 0) {
-        const skuName1 = sku1Element.length > 0 ? sku1Element[0].innerText : "";
-        const skuValue1Element = $(
-          ".gyp-sku-selector-wrap .sku-selector-flex-box .sku-selector-props .sku-props-list .selector-prop-item.selected .prop-item-text"
+      // Tìm SKU 1: từ feature-item đầu tiên, lấy button có class active
+      const firstFeatureItem = $("#skuSelection .feature-item").first();
+      if (firstFeatureItem.length > 0) {
+        const sku1Name = firstFeatureItem.find(".feature-item-label h3").text();
+        const sku1ActiveButton = firstFeatureItem.find(
+          ".transverse-filter .sku-filter-button.active"
         );
-        const skuValue1 =
-          skuValue1Element.length > 0 ? skuValue1Element[0].innerText : "";
-        if (skuValue1 !== "") {
-          listProp.push({
-            PropLabel: skuName1,
-            PropValue: skuValue1,
-          });
+        if (sku1ActiveButton.length > 0) {
+          const sku1Value = sku1ActiveButton.find(".label-name").text();
+          if (sku1Name && sku1Value) {
+            listProp.push({
+              PropLabel: sku1Name,
+              PropValue: sku1Value,
+            });
+          }
         }
       }
 
-      // tìm cặp sku 2
-      const parentNodeSkuName =
-        $button.parentNode.parentNode.parentNode.parentNode.parentNode
-          .parentNode.parentNode.parentNode;
-      const skuName = parentNodeSkuName.children[0].innerText;
-      const parentNode =
-        $button.parentNode.parentNode.parentNode.parentNode.parentNode;
-      const skuItemLeft =
-        parentNode.children.length === 2
-          ? parentNode.children[0]
-          : parentNode.children[1];
+      // Tìm SKU 2: từ $button, tìm expand-view-item cha và lấy thông tin
       let propPrice = 0;
-      let propValue = "";
-      if (skuItemLeft.children.length > 2) {
-        propValue = skuItemLeft.children[0].innerText;
-        const priceBox = skuItemLeft.children[2];
-        if (priceBox.children.length > 0) {
-          propPrice = priceBox.children[0].innerText.replace("￥", "");
+      const expandViewItem = $($button).closest(".expand-view-item");
+      if (expandViewItem.length > 0) {
+        // Lấy tên thuộc tính từ feature-item thứ 2
+        const secondFeatureItem = $("#skuSelection .feature-item").eq(1);
+        const sku2Name = secondFeatureItem
+          .find(".feature-item-label h3")
+          .text();
+
+        // Lấy giá trị từ item-label
+        const sku2Value = expandViewItem.find(".item-label").text();
+
+        // Lấy giá từ item-price-stock đầu tiên
+        const priceElement = expandViewItem.find(".item-price-stock").first();
+        if (priceElement.length > 0) {
+          const priceText = priceElement
+            .text()
+            .replace("¥", "")
+            .replace("￥", "");
+          propPrice = parseFloat(priceText) || 0;
         }
 
-        if (propValue !== "") {
+        if (sku2Name && sku2Value) {
           listProp.push({
-            PropLabel: skuName,
-            PropValue: propValue,
+            PropLabel: sku2Name,
+            PropValue: sku2Value,
           });
         }
       }
-      const quantityParentNode = $button.parentNode.parentNode;
-      const quantityInput = quantityParentNode.children[1].children[0];
-      const quantity = quantityInput.value;
+      // Lấy quantity từ input có class ant-input-number-input
+      const quantityInput = $($button)
+        .closest(".ant-input-number-wrapper")
+        .find(".ant-input-number-input");
+      const quantity =
+        quantityInput.length > 0
+          ? quantityInput.val() || quantityInput[0].value
+          : "";
 
-      // ảnh
-      const newImageProp = $(
-        ".pc-sku-wrapper .prop-item-wrapper .prop-item .active .prop-img"
-      );
-
+      // ảnh - lấy ảnh đang được hiển thị (có class prepic-active)
       let productImage = "";
-      if (newImageProp.length > 0) {
-        const rawProductImage = newImageProp[0].attributes[1].value;
-        productImage = rawProductImage
-          .replace('background: url("', "")
-          .replace(
-            '") center center / contain no-repeat; width: 36px; height: 36px; margin-right: 2px;',
-            ""
-          );
-      } else if (parentNode.children.length === 3) {
-        // sku có ảnh
-        const rawProductImage = parentNode.children[0].attributes[1].nodeValue;
-        productImage = rawProductImage
-          .replace('background: url("', "")
-          .replace(
-            '") center center / contain no-repeat; width: 36px; height: 36px; margin-right: 10px;',
-            ""
-          );
-      } else {
-        const productImgs = $(
-          ".img-list-wrapper .detail-gallery-turn-wrapper img.detail-gallery-img"
-        );
-        if (productImgs.length > 0) {
-          productImage = productImgs[0].attributes[2].nodeValue;
-        }
+      const activeImage = $(
+        ".od-gallery-turn-item-wrapper.prepic-active .od-gallery-img"
+      );
+      if (activeImage.length > 0) {
+        productImage = activeImage.attr("src") || activeImage[0].src;
       }
 
       let shopName = "";
       let shopLink = "";
       if (shopNameElement.length > 0) {
         shopName = shopNameElement[0].innerText;
-        shopLink = siteLink;
-      } else {
-        shopNameElement = $(
-          ".cjt-header-container .left-logo .logo-two .logo-name a"
-        );
-        if (shopNameElement.length > 0) {
-          shopName = shopNameElement[0].innerText;
-          shopLink = shopNameElement[0].attributes
-            ? shopNameElement[0].attributes[0].nodeValue
-            : siteLink;
+        // Lấy shop link từ thẻ a.shop-company-name
+        const shopLinkElement = $(".winport-title .shop-company-name");
+        if (shopLinkElement.length > 0) {
+          shopLink = shopLinkElement.attr("href") || siteLink;
         } else {
-          shopName = siteName;
           shopLink = siteLink;
         }
       }
@@ -697,14 +423,7 @@ function Worker1688() {
           } else {
             $("#mod-detail-price").append($ContainerPrice1688);
             $("#box-price").html(accounting.formatNumber(ndt_vnd));
-            var tble = $("#mod-detail-price .d-content table");
-            //không có giảm giá
-            if (tble[0].className.indexOf("has-discount-sku") === -1) {
-              injectHtmlNoDiscount();
-            } //co giam gia
-            else {
-              injectHtmlHasDiscount();
-            }
+            injectHtmlNoDiscountForNewUI();
           }
         });
       }
@@ -751,7 +470,7 @@ function Worker1688() {
         strInfo += "    </d>";
         strInfo += "</dl>";
       }
-      $("#load-info").html(strInfo);
+      $("#promotionBanner").html(strInfo);
       $ContainerPrice1688
         .find("b.tbe-rate.tbe-color-price")
         .html(lstProductPrice[0]); // show main price
@@ -785,122 +504,116 @@ function Worker1688() {
 
       strInfo += "</dl>";
 
-      $("#load-info").html(strInfo);
+      $("#promotionBanner").html(strInfo);
       $ContainerPrice1688
         .find("b.tbe-rate.tbe-color-price")
         .html(lstStepInfo[0].price); // show main price
     }
   }
 
-  function injectHtmlNoDiscount() {
+  function injectHtmlNoDiscountForNewUI() {
     var pricePro = 0;
-    var productElement = $("#mod-detail-price .d-content table tr.price td");
-    var amountElement = $("#mod-detail-price .d-content table tr.amount td");
+    var minProduct = 0;
     var strInfo = "";
-    for (var i = 0; i < productElement.length; i++) {
-      if (i === 1) {
-        pricePro = productElement[i].innerText.replace("¥", "");
-        if (amountElement[i].innerText.indexOf("≥") > -1) {
-          minProduct = parseInt(amountElement[i].innerText.replace("≥", ""));
-        } else {
-          var arr = amountElement[i].innerText.split("-");
-          minProduct = parseInt(arr[0]);
-        }
+
+    // Tìm container chứa các mức giá
+    var priceContainer = $(".price-component.step-price");
+
+    if (priceContainer.length === 0) {
+      console.error("Không tìm thấy container giá");
+      return;
+    }
+
+    // Lấy tất cả các mức giá
+    var priceComps = priceContainer.find(".price-comp");
+
+    if (priceComps.length === 0) {
+      console.error("Không tìm thấy các mức giá");
+      return;
+    }
+
+    // Xử lý từng mức giá
+    priceComps.each(function (index) {
+      var $priceComp = $(this);
+
+      // Lấy giá từ các span trong .price-info.currency
+      var priceSpans = $priceComp.find(".price-info.currency span");
+      var priceText = "";
+
+      if (priceSpans.length >= 3) {
+        // Ghép các phần giá: ¥ + 80 + .75 = ¥80.75
+        priceText = priceSpans.eq(1).text() + priceSpans.eq(2).text();
+      } else if (priceSpans.length === 2) {
+        // Trường hợp chỉ có 2 span: ¥ + 80
+        priceText = priceSpans.eq(1).text();
       }
-      if (i > 0) {
+
+      // Lấy số lượng từ thẻ p > span
+      var quantityText = $priceComp.find("p span").text();
+
+      if (priceText && quantityText) {
+        var price = parseFloat(priceText);
+        var quantity = quantityText;
+
+        // Xử lý số lượng tối thiểu từ mức giá đầu tiên
+        if (index === 0) {
+          if (quantity.indexOf("起批") > -1) {
+            // "1个起批" -> minProduct = 1
+            minProduct = parseInt(quantity.replace("个起批", ""));
+          } else if (quantity.indexOf("≥") > -1) {
+            // "≥100个" -> minProduct = 100
+            minProduct = parseInt(quantity.replace("≥", "").replace("个", ""));
+          } else if (quantity.indexOf("-") > -1) {
+            // "20-99个" -> minProduct = 20
+            var arr = quantity.split("-");
+            minProduct = parseInt(arr[0]);
+          }
+
+          // Lấy giá từ mức giá đầu tiên
+          pricePro = price;
+        }
+
+        // Tạo HTML cho từng mức giá
         strInfo += "<dl>";
+        strInfo += "    <dd>Mua: " + quantity + "</dd>";
         strInfo +=
-          "    <dd>Mua: " +
-          amountElement[i].children[0].innerText +
-          " sản phẩm";
-        strInfo += "    </dd>";
-        strInfo +=
-          "    <dd>Giá: <span class='tbe-color-price'>" +
-          productElement[i].innerText +
-          "</span>";
-        strInfo += "    </dd>";
+          "    <dd>Giá: <span class='tbe-color-price'>¥" +
+          priceText +
+          "</span></dd>";
         strInfo += "</dl>";
       }
-    }
+    });
 
+    // Thêm thông tin số lượng tối thiểu
     strInfo += "<dl>";
     strInfo += "    <dd style='width:100%'>";
     strInfo +=
       "       <b class='text-danger'>Shop yêu cầu mua tối thiểu " +
       minProduct +
       " sản phẩm</b>";
-    strInfo += "    </d>";
+    strInfo += "    </dd>";
     strInfo += "</dl>";
 
-    $("#load-info").html(strInfo);
-    var parePricePro = (minPrice = parseFloat(pricePro));
-    var priceVnd = parePricePro * ndt_vnd;
-    $ContainerPrice1688
-      .find("b.tbe-rate.tbe-color-price")
-      .html(accounting.formatNumber(priceVnd));
-  }
+    // Cập nhật HTML
+    $("#promotionBanner").html(strInfo);
 
-  function injectHtmlHasDiscount() {
-    var pricePro = 0;
-    var productElement = $("#mod-detail-price .d-content table tr.price");
-    var amountElement = $("#mod-detail-price .d-content table tr.amount");
-    var strInfo = "";
-    pricePro = productElement[0].children[1].children[0].children[1].innerText;
-    if (amountElement[0].children[0].children[0].innerText.indexOf("≥") > -1) {
-      minProduct = parseInt(
-        amountElement[0].children[0].children[0].innerText.replace("≥", "")
-      );
-    } else {
-      var arr = amountElement[0].children[0].children[0].innerText.split("-");
-      minProduct = parseInt(arr[0]);
+    // Tính toán giá VND
+    if (pricePro > 0) {
+      var priceVnd = pricePro * ndt_vnd;
+      $ContainerPrice1688
+        .find("b.tbe-rate.tbe-color-price")
+        .html(accounting.formatNumber(priceVnd));
     }
-    strInfo += "<dl>";
-    strInfo +=
-      "    <dd>Mua: " +
-      amountElement[0].children[0].children[0].innerText +
-      " sản phẩm";
-    strInfo += "    </dd>";
-    strInfo +=
-      "    <dd>Giá: <span class='tbe-color-price'>" + pricePro + "</span>";
-    strInfo += "    </dd>";
-    strInfo += "</dl>";
-
-    strInfo += "<dl>";
-    strInfo += "    <dd style='width:100%'>";
-    strInfo +=
-      "       <b class='text-danger'>Shop yêu cầu mua tối thiểu " +
-      minProduct +
-      " sản phẩm</b>";
-    strInfo += "    </d>";
-    strInfo += "</dl>";
-
-    $("#load-info").html(strInfo);
-    var parePricePro = (minPrice = parseFloat(pricePro));
-    var priceVnd = parePricePro * ndt_vnd;
-    $ContainerPrice1688
-      .find("b.tbe-rate.tbe-color-price")
-      .html(accounting.formatNumber(priceVnd));
-  }
-
-  function hasClass(elem, className) {
-    return elem.className.split(" ").indexOf(className) > -1;
   }
 
   /**
    * initialize the app
    */
   self.initialize = function () {
-    document.addEventListener(
-      "click",
-      function (e) {
-        if (hasClass(e.target, "next-icon")) {
-          iconAddProductForNewUI(e.target);
-        } else if (hasClass(e.target, "next-btn")) {
-          btnAddProductForNewUI(e.target);
-        }
-      },
-      false
-    );
+    // Bắt sự kiện click trực tiếp vào element có class ant-input-number-group-addon
+    $(document).on("click", ".ant-input-number-group-addon", function (e) {
+      btnAddProductForNewUI(this);
+    });
 
     loadToolbar();
     loadContainerPrice();
